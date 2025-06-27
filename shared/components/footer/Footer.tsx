@@ -27,7 +27,7 @@ const socialLinks = [
   {
     label: "Github",
     icon: AiFillGithub,
-    href: "https://github.com/luismartinezs/elden-ring-builds-checklist",
+    href: "https://github.com/luismartinezs/nightreign-guides",
   },
 ];
 

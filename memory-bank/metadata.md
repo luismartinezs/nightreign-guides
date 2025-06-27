@@ -1,4 +1,4 @@
-- Repository URL (origin): https://github.com/[github_user]/[github_repo]
+- Repository URL (origin): https://github.com/luismartinezs/nightreign-guides
 - Main branch name: "main"
 - Company name: "AppForgeLabs LLC"
 - Site name: "Nightreign Guides"

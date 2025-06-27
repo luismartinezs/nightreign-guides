@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { BsChevronRight } from "react-icons/bs";
 import { FaXTwitter } from "react-icons/fa6";
 import { AiOutlineClose } from "react-icons/ai";
-// import { FaGithub } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
 
 import { BurgerButton } from "@/shared/components/header/BurgerButton";
 import { EldenRingLogo } from "@/shared/components/EldenRingLogo";
@@ -26,11 +26,11 @@ const socialLinks = [
     icon: FaXTwitter,
     href: "https://twitter.com/LuisMartinezSu2",
   },
-  // {
-  //   label: "Github",
-  //   icon: FaGithub,
-  //   href: "https://github.com/luismartinezs/elden-ring-builds-checklist",
-  // },
+  {
+    label: "Github",
+    icon: FaGithub,
+    href: "https://github.com/luismartinezs/nightreign-guides",
+  },
 ];
 
 function LogoLink(props: React.ComponentPropsWithoutRef<"a">) {

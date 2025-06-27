@@ -24,7 +24,7 @@ export function List({ className, children, variant = "disc", title, ...other }:
   return (
     <>
       {title && <div className="mb-2">{title}</div>}
-      <ul className={cn(variantClasses[variant], "space-y-2", className)} {...other}>
+      <ul className={cn(variantClasses[variant], "space-y-2 mb-6", className)} {...other}>
         {children}
       </ul>
     </>
