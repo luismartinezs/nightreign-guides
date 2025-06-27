@@ -1,0 +1,4 @@
+- Repository URL (origin): https://github.com/[github_user]/[github_repo]
+- Main branch name: "main"
+- Company name: "AppForgeLabs LLC"
+- Site name: "Nightreign Guides"
