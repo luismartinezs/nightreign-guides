@@ -20,22 +20,22 @@ export function Resources({
       {/* Subreddits */}
       <List title={<HeadingH3>Subreddits</HeadingH3>} variant="none">
         <ListItem>
-          <Link href="https://www.reddit.com/r/Nightreign/">r/Nightreign</Link>
+          <Link external href="https://www.reddit.com/r/Nightreign/">r/Nightreign</Link>
         </ListItem>
         <ListItem>
-          <Link href="https://www.reddit.com/r/Nightreigngameplay/">r/Nightreigngameplay</Link>
+          <Link external href="https://www.reddit.com/r/Nightreigngameplay/">r/Nightreigngameplay</Link>
         </ListItem>
       </List>
 
       {/* General Guides */}
       <List title={<HeadingH3>General Guides</HeadingH3>} variant="none">
         <ListItem>
-          <Link href="https://www.reddit.com/r/Nightreigngameplay/comments/1l0j0or/psa_how_to_win_every_match_in_nightreign_super/">
+          <Link external href="https://www.reddit.com/r/Nightreigngameplay/comments/1l0j0or/psa_how_to_win_every_match_in_nightreign_super/">
             PSA: How to Win Every Match in Nightreign (Super Guide)
           </Link>
         </ListItem>
         <ListItem>
-          <Link href="https://www.reddit.com/r/Nightreign/comments/1l3328v/i_have_defeated_all_nightlords_and_finished_all/">
+          <Link external href="https://www.reddit.com/r/Nightreign/comments/1l3328v/i_have_defeated_all_nightlords_and_finished_all/">
             I Have Defeated All Nightlords and Finished All Quests – Experience Report
           </Link>
         </ListItem>
@@ -44,7 +44,7 @@ export function Resources({
       {/* Koklateo Guides */}
       <List title={<HeadingH3>Koklateo Guides</HeadingH3>} variant="none">
         <ListItem>
-          <Link href="https://www.youtube.com/watch?v=Jvw6Z10YdeU&ab_channel=ZoneX">
+          <Link external href="https://www.youtube.com/watch?v=Jvw6Z10YdeU&ab_channel=ZoneX">
             STOP Doing The Shrouded City WRONG (More Loot & Runes) – Elden Ring Nightreign
           </Link>
         </ListItem>
@@ -53,14 +53,14 @@ export function Resources({
       {/* Tools */}
       <List title={<HeadingH3>Tools</HeadingH3>} variant="none">
         <ListItem>
-          <Link href="https://baspla.github.io/nightreign/">Nightreign Damage Calculator &amp; Build Planner</Link>
+          <Link external href="https://baspla.github.io/nightreign/">Nightreign Damage Calculator &amp; Build Planner</Link>
         </ListItem>
       </List>
 
       {/* Maps */}
       <List title={<HeadingH3>Maps</HeadingH3>} variant="none">
         <ListItem>
-          <Link href="https://mapgenie.io/elden-ring-nightreign/maps/limveld">
+          <Link external href="https://mapgenie.io/elden-ring-nightreign/maps/limveld">
             Mapgenie Limveld Map
           </Link>
         </ListItem>
@@ -69,7 +69,7 @@ export function Resources({
       {/* Other */}
       <List title={<HeadingH3>Other</HeadingH3>} variant="none">
         <ListItem>
-          <Link href="https://www.reddit.com/r/Nightreign/comments/1l96vp4/boss_weaknesses/">
+          <Link external href="https://www.reddit.com/r/Nightreign/comments/1l96vp4/boss_weaknesses/">
             Boss Weaknesses Cheat-Sheet
           </Link>
         </ListItem>
