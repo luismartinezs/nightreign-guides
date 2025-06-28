@@ -39,11 +39,6 @@ export function Resources({
             I Have Defeated All Nightlords and Finished All Quests - Experience Report
           </Link>
         </ListItem>
-        <ListItem>
-          <Link external href="https://mobalytics.gg/elden-ring-nightreign">
-            Mobalytics Nightreign Tier List &amp; Build Guides
-          </Link>
-        </ListItem>
       </List>
 
 
