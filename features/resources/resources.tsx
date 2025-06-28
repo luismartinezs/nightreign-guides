@@ -36,16 +36,40 @@ export function Resources({
         </ListItem>
         <ListItem>
           <Link external href="https://www.reddit.com/r/Nightreign/comments/1l3328v/i_have_defeated_all_nightlords_and_finished_all/">
-            I Have Defeated All Nightlords and Finished All Quests – Experience Report
+            I Have Defeated All Nightlords and Finished All Quests - Experience Report
+          </Link>
+        </ListItem>
+        <ListItem>
+          <Link external href="https://mobalytics.gg/elden-ring-nightreign">
+            Mobalytics Nightreign Tier List &amp; Build Guides
           </Link>
         </ListItem>
       </List>
 
-      {/* Koklateo Guides */}
-      <List title={<HeadingH3>Koklateo Guides</HeadingH3>} variant="none">
+
+      {/* Castle Guides */}
+      <List title={<HeadingH3>Castle Guides</HeadingH3>} variant="none">
+        <ListItem>
+          <Link external href="https://www.youtube.com/watch?v=d6BdvSp5Y5A&ab_channel=ZoneX">
+            Complete Castle Walkthrough &amp; Secrets - ZoneX
+          </Link>
+        </ListItem>
+      </List>
+
+      {/* Crater Guides */}
+      <List title={<HeadingH3>Crater Guides</HeadingH3>} variant="none">
+        <ListItem>
+          <Link external href="https://www.youtube.com/watch?v=eiOW0GpeRGY&ab_channel=ZoneX">
+            Crater Area Guide - ZoneX
+          </Link>
+        </ListItem>
+      </List>
+
+      {/* Noklateo Guides */}
+      <List title={<HeadingH3>Noklateo Guides</HeadingH3>} variant="none">
         <ListItem>
           <Link external href="https://www.youtube.com/watch?v=Jvw6Z10YdeU&ab_channel=ZoneX">
-            STOP Doing The Shrouded City WRONG (More Loot & Runes) – Elden Ring Nightreign
+            STOP Doing The Shrouded City WRONG (More Loot & Runes) - Elden Ring Nightreign
           </Link>
         </ListItem>
       </List>
@@ -74,6 +98,8 @@ export function Resources({
           </Link>
         </ListItem>
       </List>
+
+
     </SectionWrapper>
   )
 }
