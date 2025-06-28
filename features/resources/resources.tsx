@@ -27,6 +27,15 @@ export function Resources({
         </ListItem>
       </List>
 
+      {/* YouTube Channels */}
+      <List title={<HeadingH3>YouTube Channels</HeadingH3>} variant="none">
+        <ListItem>
+          <Link external href="https://www.youtube.com/@youwy">
+            Youwy
+          </Link>
+        </ListItem>
+      </List>
+
       {/* General Guides */}
       <List title={<HeadingH3>General Guides</HeadingH3>} variant="none">
         <ListItem>
