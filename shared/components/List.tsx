@@ -39,7 +39,7 @@ export function ListItem(
   return (
     <li
       className={cn(
-        "text-lg font-normal text-slate-300 hover:text-white transition-colors",
+        "text-lg font-normal text-slate-100",
         className
       )}
       {...other}
