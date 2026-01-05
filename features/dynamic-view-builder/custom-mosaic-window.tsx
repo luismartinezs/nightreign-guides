@@ -19,16 +19,18 @@ interface CustomMosaicWindowProps {
   path: MosaicBranch[];
   title: string;
   children: React.ReactNode;
+  onMoveNode?: (sourcePath: MosaicBranch[], targetPath: MosaicBranch[], position: DropPosition, widgetId: WidgetId) => void;
   toolbarControls?: React.ReactNode[];
 }
 
 type DropPosition = 'top' | 'bottom' | 'left' | 'right' | 'center' | null;
 
-export const CustomMosaicWindow: React.FC<CustomMosaicWindowProps> = ({ 
+export const CustomMosaicWindow: React.FC<CustomMosaicWindowProps> = ({
   id,
-  path, 
-  title, 
-  children 
+  path,
+  title,
+  children,
+  onMoveNode
 }) => {
   const context = useContext(MosaicContext);
   const [dropPosition, setDropPosition] = useState<DropPosition>(null);
@@ -56,6 +58,14 @@ export const CustomMosaicWindow: React.FC<CustomMosaicWindowProps> = ({
   };
 
   // --- Drag and Drop Logic ---
+  
+  const handleDragStart = (e: DragEvent<HTMLDivElement>) => {
+    // Basic drag data for sidebar items or external
+    e.dataTransfer.setData('text/plain', id);
+    // Custom data for internal moves
+    e.dataTransfer.setData('application/json', JSON.stringify({ sourcePath: path, widgetId: id }));
+    e.dataTransfer.effectAllowed = 'move';
+  };
 
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -117,20 +127,33 @@ export const CustomMosaicWindow: React.FC<CustomMosaicWindowProps> = ({
     setDropPosition(null);
 
     const newWidgetId = e.dataTransfer.getData('text/plain');
+    const jsonData = e.dataTransfer.getData('application/json');
+    
+    // Check for internal move
+    if (jsonData && onMoveNode) {
+        try {
+            const data = JSON.parse(jsonData);
+            if (data.sourcePath && data.widgetId) {
+                // Internal Move
+                console.log('[CustomMosaicWindow] Internal Move Detected');
+                if (JSON.stringify(data.sourcePath) === JSON.stringify(path)) {
+                    console.log('Dropped on self - ignoring');
+                    return;
+                }
+                onMoveNode(data.sourcePath, path, dropPosition, data.widgetId);
+                return;
+            }
+        } catch (err) {
+            // Not json or invalid
+        }
+    }
+
     if (!newWidgetId) return;
 
     console.log(`[CustomMosaicWindow] Dropped ${newWidgetId} on ${id} at ${dropPosition}`);
 
     if (dropPosition === 'center') {
-      // Replace content? Or maybe split horizontal default?
-      // Let's assume Center = Replace content for now? Or just ignore?
-      // Requirements say "nested them", so split is primary.
-      // Let's default center to "replace current widget"
-      // mosaicActions.replaceWith(path, newWidgetId);
-      // Wait, let's play safe and treat center as "Right" split for now or ignore.
-      // Or:
       console.log('Center drop - swapping widget');
-      // To swap:
       mosaicActions.replaceWith(path, newWidgetId);
       return;
     }
@@ -138,17 +161,12 @@ export const CustomMosaicWindow: React.FC<CustomMosaicWindowProps> = ({
     if (!dropPosition) return;
 
     // Construct new node based on direction
-    // 'row' = Left/Right
-    // 'column' = Top/Bottom
-    
     let direction: 'row' | 'column' = 'row';
     let first: WidgetId = id;   // Existing
     let second: WidgetId = newWidgetId; // New
     
     if (dropPosition === 'left' || dropPosition === 'right') {
         direction = 'row';
-    } else {
-        direction = 'column';
     }
 
     // If 'left' or 'top', the NEW widget comes FIRST.
@@ -197,11 +215,14 @@ export const CustomMosaicWindow: React.FC<CustomMosaicWindowProps> = ({
        )}
 
       {/* Header / Toolbar */}
-      <div className={cn("flex items-center justify-between px-3 h-10 select-none", styles.dvbMosaicWindowToolbar)}>
+      <div 
+         className={cn("flex items-center justify-between px-3 h-10 select-none cursor-grab active:cursor-grabbing", styles.dvbMosaicWindowToolbar)}
+         draggable
+         onDragStart={handleDragStart}
+      >
         <span className={styles.dvbMosaicWindowTitle}>{title}</span>
         
-        <div className="flex items-center gap-1">
-          <button 
+        <div className="flex items-center gap-1">          <button 
             onClick={handleSplit}
             className="p-1 hover:bg-slate-700 rounded text-slate-400 hover:text-white transition-colors"
             title="Split"

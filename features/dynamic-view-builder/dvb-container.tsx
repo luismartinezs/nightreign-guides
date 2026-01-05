@@ -5,7 +5,10 @@ import {
   Mosaic, 
   MosaicNode, 
   MosaicZeroState, 
-  updateTree 
+  updateTree, 
+  createRemoveUpdate, 
+  MosaicBranch, 
+  MosaicDirection 
 } from 'react-mosaic-component';
 import 'react-mosaic-component/react-mosaic-component.css';
 import '@blueprintjs/core/lib/css/blueprint.css';
@@ -160,11 +163,8 @@ export default function DvbContainer() {
                console.log('[DVB] Setting initial layout');
                handleChange(widgetId);
              } else {
-               console.log('[DVB] TODO: Calculate drop position and split tree');
-               // For now, we just log. The user asked for logs to determine the cause.
-               // The cause is likely that this handler was missing entirely.
-               // Once we confirm this log prints, we can implement the complex split logic.
-               alert(`Dropped ${widgetId}! (Split logic to be implemented)`);
+               // We handle drops on the *window* now (CustomMosaicWindow).
+               // Drops on the *container* (e.g. empty space or background) aren't supported yet except init.
              }
           }}
         >
@@ -174,6 +174,39 @@ export default function DvbContainer() {
                 id={id}
                 path={path}
                 title={id === NEW_WIDGET_ID ? 'Select Widget' : (WIDGET_REGISTRY[id]?.title || id)}
+                onMoveNode={(sourcePath, targetPath, position, widgetId) => {
+                    if (!layout) return;
+                    
+                    console.log('Moving', widgetId, 'to', id, 'at', position);
+                    const targetId = id; // The ID of the node we dropped ONTO
+
+                    // 1. Calculate Insertion
+                    let direction: MosaicDirection = 'row';
+                    let first: MosaicNode<WidgetId> = targetId; 
+                    let second: MosaicNode<WidgetId> = widgetId;
+                    
+                    if (position === 'left' || position === 'right') direction = 'row';
+                    else direction = 'column';
+                    
+                    if (position === 'left' || position === 'top') {
+                        first = widgetId;
+                        second = targetId;
+                    } else {
+                        first = targetId;
+                        second = widgetId;
+                    }
+                    
+                    const newNode = { direction, first, second, splitPercentage: 50 };
+                    
+                    // 2. Perform Insert
+                    let tempLayout = updateTree(layout, [{ path: targetPath, spec: { $set: newNode } }]);
+                    
+                    // 3. Perform Remove
+                    const removeUpdates = createRemoveUpdate(tempLayout, sourcePath);
+                    const finalLayout = updateTree(tempLayout, [removeUpdates]);
+                    
+                    handleChange(finalLayout);
+                }}
               >
                 {id === NEW_WIDGET_ID ? (
                   <WidgetSelector onSelect={(newId) => replaceNode(path, newId)} />
