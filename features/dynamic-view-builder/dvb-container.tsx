@@ -1,7 +1,12 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Mosaic, MosaicNode, MosaicWindow, MosaicZeroState, updateTree } from 'react-mosaic-component';
+import { 
+  Mosaic, 
+  MosaicNode, 
+  MosaicZeroState, 
+  updateTree 
+} from 'react-mosaic-component';
 import 'react-mosaic-component/react-mosaic-component.css';
 import '@blueprintjs/core/lib/css/blueprint.css';
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
@@ -13,6 +18,7 @@ import { saveLayout, loadLayout, getSavedLayouts, saveCurrentLayout, loadCurrent
 import { Button } from '@/shared/components/button';
 import { cn } from '@/shared/utils/cn';
 import { Heading } from '@/shared/components/Heading';
+import { CustomMosaicWindow } from './custom-mosaic-window';
 
 const NEW_WIDGET_ID = 'new-widget';
 
@@ -101,7 +107,9 @@ export default function DvbContainer() {
               className="p-3 bg-slate-700 rounded cursor-move hover:bg-slate-600 border border-slate-600 text-slate-200 select-none shadow-sm"
               draggable
               onDragStart={(e) => {
+                 console.log('[DVB] Drag Start:', widget.id);
                  e.dataTransfer.setData('text/plain', widget.id);
+                 e.dataTransfer.effectAllowed = 'copy';
               }}
             >
               {widget.title}
@@ -129,12 +137,42 @@ export default function DvbContainer() {
         </div>
 
         {/* Main Mosaic Area */}
-        <div className="flex-1 relative bg-slate-950">
+        <div 
+          className="flex-1 relative bg-slate-950"
+          onDragEnter={(e) => {
+            e.preventDefault();
+            console.log('[DVB] Drag Enter');
+          }}
+          onDragOver={(e) => {
+             e.preventDefault(); // Essential to allow dropping
+             e.dataTransfer.dropEffect = 'copy';
+             // console.log('[DVB] Drag Over'); // Commented out to avoid spamming console
+          }}
+          onDrop={(e) => {
+             e.preventDefault();
+             const widgetId = e.dataTransfer.getData('text/plain');
+             console.log('[DVB] Drop Detected. Widget ID:', widgetId);
+             
+             if (!widgetId) return;
+
+             // Logic to handle the drop (Cause #1 fix attempt)
+             if (!layout) {
+               console.log('[DVB] Setting initial layout');
+               handleChange(widgetId);
+             } else {
+               console.log('[DVB] TODO: Calculate drop position and split tree');
+               // For now, we just log. The user asked for logs to determine the cause.
+               // The cause is likely that this handler was missing entirely.
+               // Once we confirm this log prints, we can implement the complex split logic.
+               alert(`Dropped ${widgetId}! (Split logic to be implemented)`);
+             }
+          }}
+        >
            <Mosaic<WidgetId>
             renderTile={(id, path) => (
-              <MosaicWindow<WidgetId>
+              <CustomMosaicWindow
+                id={id}
                 path={path}
-                createNode={() => NEW_WIDGET_ID} // Split creates a selector
                 title={id === NEW_WIDGET_ID ? 'Select Widget' : (WIDGET_REGISTRY[id]?.title || id)}
               >
                 {id === NEW_WIDGET_ID ? (
@@ -142,7 +180,7 @@ export default function DvbContainer() {
                 ) : (
                   WIDGET_REGISTRY[id]?.component || <div>Unknown Widget</div>
                 )}
-              </MosaicWindow>
+              </CustomMosaicWindow>
             )}
             value={layout}
             onChange={handleChange}

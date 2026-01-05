@@ -2,55 +2,83 @@
 
 /* The main container background is handled by Tailwind (bg-slate-950) */
 
-/* Splitters */
+/* Splitters - These are still rendered by Mosaic, so we keep these overrides */
 .dvbMosaic .mosaic-split {
   background: var(--color-slate-900) !important;
   border: none !important;
+  z-index: 10;
 }
 
 .dvbMosaic .mosaic-split:hover {
   background: var(--color-primary-600) !important; 
 }
 
-/* Window/Pane Styling */
-.dvbMosaic .mosaic-window {
-  background: var(--color-slate-800) !important;
-  box-shadow: none !important;
+/* Custom Window Styling */
+.dvbMosaicWindow {
+  background: var(--color-slate-800);
   border: 1px solid var(--color-slate-700);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  position: relative; /* Ensure overlays are positioned relative to this */
 }
 
-.dvbMosaic .mosaic-window .mosaic-window-toolbar {
-  background: var(--color-slate-900) !important;
-  box-shadow: none !important;
-  border-bottom: 1px solid var(--color-slate-700) !important;
-  color: var(--color-slate-50) !important;
-  height: 40px !important;
+.dvbMosaicWindowToolbar {
+  background: var(--color-slate-900);
+  border-bottom: 1px solid var(--color-slate-700);
+  color: var(--color-slate-50);
+  height: 40px;
+  flex-shrink: 0;
 }
 
-.dvbMosaic .mosaic-window .mosaic-window-title {
-  color: var(--color-slate-200) !important;
+.dvbMosaicWindowTitle {
+  color: var(--color-slate-200);
   font-weight: 600;
   font-size: 0.9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-/* Icons in toolbar */
-.dvbMosaic .mosaic-window-toolbar .mosaic-window-controls .bp5-button {
-  color: var(--color-slate-400) !important;
+.dvbMosaicWindowBody {
+  background: var(--color-slate-950);
+  color: var(--color-slate-300);
+  flex: 1;
+  overflow: auto;
 }
 
-.dvbMosaic .mosaic-window-toolbar .mosaic-window-controls .bp5-button:hover {
-  color: var(--color-primary-300) !important;
-  background: transparent !important;
-}
-
-/* Body */
-.dvbMosaic .mosaic-window-body {
-  background: var(--color-slate-950) !important; /* Inner content bg */
-  color: var(--color-slate-300) !important;
-}
-
-/* Zero State */
+/* Zero State - Still rendered by Mosaic */
 .dvbMosaic .mosaic-zero-state {
   background: var(--color-slate-900) !important;
   border: 1px dashed var(--color-slate-700) !important;
+  color: var(--color-slate-400) !important;
+}
+
+/* Drop Zones Overlays */
+.dropZone {
+  position: absolute;
+  background: rgba(var(--color-primary-500), 0.2); /* Using primary color with opacity */
+  border: 2px dashed var(--color-primary-400);
+  pointer-events: none; /* Let events pass through to the window handlers */
+  z-index: 50;
+  transition: all 0.1s ease;
+}
+
+/* We can also just use absolute positioning classes in Tailwind/style props, 
+   but having specific classes helps with clarity. */
+.dropZoneTop {
+  top: 0; left: 0; right: 0; height: 50%;
+}
+.dropZoneBottom {
+  bottom: 0; left: 0; right: 0; height: 50%;
+}
+.dropZoneLeft {
+  top: 0; bottom: 0; left: 0; width: 50%;
+}
+.dropZoneRight {
+  top: 0; bottom: 0; right: 0; width: 50%;
+}
+.dropZoneCenter {
+  top: 0; bottom: 0; left: 0; right: 0;
 }
