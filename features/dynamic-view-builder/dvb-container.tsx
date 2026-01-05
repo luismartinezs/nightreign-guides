@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Mosaic, 
   MosaicNode, 
@@ -22,6 +22,7 @@ import { Button } from '@/shared/components/button';
 import { cn } from '@/shared/utils/cn';
 import { Heading } from '@/shared/components/Heading';
 import { CustomMosaicWindow } from './custom-mosaic-window';
+import { AiOutlineFullscreen, AiOutlineFullscreenExit } from "react-icons/ai";
 
 const NEW_WIDGET_ID = 'new-widget';
 
@@ -30,6 +31,8 @@ export default function DvbContainer() {
   const [isClient, setIsClient] = useState(false);
   const [saveName, setSaveName] = useState('');
   const [savedLayouts, setSavedLayouts] = useState(getSavedLayouts());
+  const mosaicWrapperRef = useRef<HTMLDivElement>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   // Prevent hydration mismatch
   useEffect(() => {
@@ -38,6 +41,48 @@ export default function DvbContainer() {
     if (current) {
       setLayout(current);
     }
+  }, []);
+
+  // Handle Fullscreen Toggle
+  const toggleFullscreen = () => {
+    if (!mosaicWrapperRef.current) return;
+
+    if (!document.fullscreenElement) {
+      mosaicWrapperRef.current.requestFullscreen().then(() => {
+        setIsFullscreen(true);
+      }).catch(err => {
+        console.error(`Error attempting to enable fullscreen: ${err.message}`);
+      });
+    } else {
+      document.exitFullscreen();
+      setIsFullscreen(false);
+    }
+  };
+
+  // Keyboard Listener for 'F'
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if typing in an input
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+        return;
+      }
+      
+      if (e.key === 'f' || e.key === 'F') {
+        toggleFullscreen();
+      }
+    };
+
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    };
   }, []);
 
   const handleChange = (newNode: MosaicNode<WidgetId> | null) => {
@@ -74,6 +119,18 @@ export default function DvbContainer() {
       <div className="flex items-center gap-4 p-4 bg-slate-800 border-b border-slate-700">
         <Heading.H2 className="text-xl mb-0">Dynamic View Builder</Heading.H2>
         <div className="flex items-center gap-2 ml-auto">
+           <Button 
+             variant="outline" 
+             onClick={toggleFullscreen} 
+             title="Toggle Fullscreen (F)"
+             className="flex items-center gap-2 border-slate-600 text-slate-300 hover:text-white hover:bg-slate-700"
+           >
+             <span>Fullscreen</span>
+             <span className="hidden sm:inline-block border border-slate-500 rounded px-1.5 py-0.5 text-xs font-mono text-slate-400">F</span>
+           </Button>
+           
+           <div className="h-6 w-px bg-slate-600 mx-2" />
+           
            <input 
             type="text" 
             placeholder="Layout Name" 
@@ -118,53 +175,31 @@ export default function DvbContainer() {
               {widget.title}
             </div>
           ))}
-          <div className="mt-4 text-xs text-slate-500">
-            * Or click to add to active layout:
+          <div className="mt-4 text-xs text-slate-500 italic">
+            * Drag and drop a widget header to reposition it.
           </div>
-          <div className="flex flex-col gap-2">
-            {Object.values(WIDGET_REGISTRY).map(widget => (
-               <Button 
-                 key={widget.id + '-btn'} 
-                 variant="muted" 
-                 onClick={() => {
-                   if (!layout) handleChange(widget.id);
-                 }}
-                 className="text-left justify-start py-1 px-2 text-slate-400 hover:text-slate-100 hover:bg-slate-700"
-                 disabled={!!layout}
-               >
-                 Add {widget.title} (if empty)
-               </Button>
-            ))}
-          </div>
-
         </div>
 
         {/* Main Mosaic Area */}
         <div 
+          ref={mosaicWrapperRef}
           className="flex-1 relative bg-slate-950"
           onDragEnter={(e) => {
             e.preventDefault();
-            console.log('[DVB] Drag Enter');
           }}
           onDragOver={(e) => {
              e.preventDefault(); // Essential to allow dropping
              e.dataTransfer.dropEffect = 'copy';
-             // console.log('[DVB] Drag Over'); // Commented out to avoid spamming console
           }}
           onDrop={(e) => {
              e.preventDefault();
              const widgetId = e.dataTransfer.getData('text/plain');
-             console.log('[DVB] Drop Detected. Widget ID:', widgetId);
              
              if (!widgetId) return;
 
              // Logic to handle the drop (Cause #1 fix attempt)
              if (!layout) {
-               console.log('[DVB] Setting initial layout');
                handleChange(widgetId);
-             } else {
-               // We handle drops on the *window* now (CustomMosaicWindow).
-               // Drops on the *container* (e.g. empty space or background) aren't supported yet except init.
              }
           }}
         >
@@ -177,10 +212,7 @@ export default function DvbContainer() {
                 onMoveNode={(sourcePath, targetPath, position, widgetId) => {
                     if (!layout) return;
                     
-                    console.log('Moving', widgetId, 'to', id, 'at', position);
-                    const targetId = id; // The ID of the node we dropped ONTO
-
-                    // 1. Calculate Insertion
+                    const targetId = id; 
                     let direction: MosaicDirection = 'row';
                     let first: MosaicNode<WidgetId> = targetId; 
                     let second: MosaicNode<WidgetId> = widgetId;
@@ -197,14 +229,9 @@ export default function DvbContainer() {
                     }
                     
                     const newNode = { direction, first, second, splitPercentage: 50 };
-                    
-                    // 2. Perform Insert
                     let tempLayout = updateTree(layout, [{ path: targetPath, spec: { $set: newNode } }]);
-                    
-                    // 3. Perform Remove
                     const removeUpdates = createRemoveUpdate(tempLayout, sourcePath);
                     const finalLayout = updateTree(tempLayout, [removeUpdates]);
-                    
                     handleChange(finalLayout);
                 }}
               >
@@ -217,7 +244,18 @@ export default function DvbContainer() {
             )}
             value={layout}
             onChange={handleChange}
-            zeroStateView={<MosaicZeroState createNode={() => NEW_WIDGET_ID} />}
+            zeroStateView={
+              <div className="flex flex-col items-center justify-center h-full w-full bg-slate-950 text-slate-400 p-8 border-2 border-dashed border-slate-800 m-4 rounded-xl">
+                <p className="mb-4 text-lg">Your workspace is empty.</p>
+                <p className="text-sm mb-6">Drag a widget from the left or click below to start.</p>
+                <Button 
+                  variant="nightreign" 
+                  onClick={() => handleChange(NEW_WIDGET_ID)}
+                >
+                  Create First View
+                </Button>
+              </div>
+            }
             className="mosaic-blueprint-theme"
           />
         </div>
