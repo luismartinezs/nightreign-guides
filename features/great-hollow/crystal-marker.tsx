@@ -31,16 +31,12 @@ export function CrystalMarker({
       style={{
         left: `${x}%`,
         top: `${y}%`,
+        width: `${CONFIG.CRYSTAL_SIZE_PERCENT}%`,
+        aspectRatio: "1/1",
       }}
       aria-label={isSelected ? "Unmark crystal" : "Mark crystal found"}
     >
-      <div
-        className="relative"
-        style={{
-          width: CONFIG.CRYSTAL_SIZE_PX,
-          height: CONFIG.CRYSTAL_SIZE_PX,
-        }}
-      >
+      <div className="relative w-full h-full">
         <Image
           src="/features/great-hollow/crystal.webp"
           alt="Crystal"

@@ -1,5 +1,5 @@
 export const CONFIG = {
-  CRYSTAL_SIZE_PX: 64, // Crystal icon size in pixels
+  CRYSTAL_SIZE_PERCENT: 10, // Crystal icon size as percentage of map width
 };
 
 export type MapZone = 'top' | 'bottom';
