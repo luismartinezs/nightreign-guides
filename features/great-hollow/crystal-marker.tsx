@@ -8,6 +8,7 @@ interface CrystalMarkerProps {
   x: number;
   y: number;
   isSelected?: boolean;
+  isOptimal?: boolean;
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
@@ -15,6 +16,7 @@ export function CrystalMarker({
   x,
   y,
   isSelected,
+  isOptimal,
   onClick,
 }: CrystalMarkerProps) {
   return (
@@ -43,7 +45,12 @@ export function CrystalMarker({
           src="/features/great-hollow/crystal.webp"
           alt="Crystal"
           fill
-          className="object-contain"
+          className={cn(
+            "object-contain transition-[filter] duration-200",
+            isOptimal &&
+              !isSelected &&
+              "hue-rotate-[45deg] saturate-[1.5] brightness-110"
+          )}
           draggable={false}
         />
       </div>

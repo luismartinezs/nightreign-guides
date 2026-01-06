@@ -77,6 +77,7 @@ export function MapOverlay({
               key={crystal.id}
               x={crystal.x}
               y={crystal.y}
+              isOptimal={crystal.isOptimal}
               isSelected={foundCrystalIds.has(crystal.id)}
               onClick={(e) => {
                 if (isDevMode) {

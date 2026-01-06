@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useMemo } from "react";
 import { HeadingH2 } from "@/shared/components/Heading";
 import { SectionWrapper } from "@/shared/components/SectionWrapper";
@@ -60,8 +61,9 @@ export function GreatHollowClient({
   return (
     <SectionWrapper className={className} {...otherProps}>
       <div className="flex flex-col gap-2 mb-8">
-        <HeadingH2>Great Hollow Crystal Selector</HeadingH2>
-        {/* Dev Mode Hidden
+        <div className="flex justify-between items-start">
+          <HeadingH2>Great Hollow Crystal Selector</HeadingH2>
+          {/* Dev Mode Hidden
           <button
             onClick={() => setIsDevMode(!isDevMode)}
             className="text-xs px-2 py-1 bg-gray-800 rounded font-mono text-gray-400 hover:text-white"
@@ -69,10 +71,23 @@ export function GreatHollowClient({
             {isDevMode ? "DEV MODE: ON" : "DEV MODE (click to enable)"}
           </button>
           */}
+        </div>
         <p className="text-gray-400">
           Click on the crystals you have found to narrow down the possible
           locations of the remaining crystals.
         </p>
+
+        <div className="flex items-center gap-3 mt-2 text-sm text-purple-200 bg-purple-500/10 border border-purple-500/20 px-3 py-2 rounded-lg w-fit">
+          <div className="relative w-6 h-6">
+            <Image
+              src="/features/great-hollow/crystal.webp"
+              alt="Optimal Crystal"
+              fill
+              className="object-contain hue-rotate-[45deg] saturate-[1.5] brightness-110"
+            />
+          </div>
+          <span>Look for these crystals first</span>
+        </div>
       </div>
 
       <div className="grid gap-8 md:grid-cols-2">
@@ -97,6 +112,19 @@ export function GreatHollowClient({
           isDevMode={isDevMode}
         />
       </div>
+
+      <p className="mt-8 text-xs text-center text-gray-500">
+        Special thanks to{" "}
+        <a
+          href="https://www.reddit.com/r/Nightreign/comments/1pljy7p/the_great_hollow_crystals_definitive_map/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:text-gray-300 underline transition-colors"
+        >
+          u/Alex0Goat and SisterNun on Reddit
+        </a>{" "}
+        for the definitive map data.
+      </p>
     </SectionWrapper>
   );
 }

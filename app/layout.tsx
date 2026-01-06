@@ -7,6 +7,7 @@ import { Footer } from "@/shared/components/footer/Footer";
 import { FixedBottomRightStack } from "@/shared/components/FixedBottomRightStack";
 import { FeaturebaseFeedbackLink } from "@/shared/components/FeaturebaseFeedbackLink";
 import { AutoScrollButton } from "@/shared/components/auto-scroll-button";
+import { ShareCTA } from "@/features/shared/share-cta";
 
 export const metadata: Metadata = {
   title: meta.name,
@@ -26,14 +27,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <meta
-          name="apple-mobile-web-app-title"
-          content={meta.name}
-        />
+        <meta name="apple-mobile-web-app-title" content={meta.name} />
       </head>
-      <body
-        className={`${inter.className} antialiased`}
-      >
+      <body className={`${inter.className} antialiased`}>
         <div className="relative isolate flex h-full min-h-screen flex-col justify-between">
           <div>
             <Header className="sticky top-0 z-30" />
@@ -41,6 +37,9 @@ export default function RootLayout({
           <main className="relative isolate h-full flex-1 flex flex-col">
             {children}
           </main>
+          <div className="py-8">
+            <ShareCTA />
+          </div>
           <Footer />
           <FixedBottomRightStack>
             <FeaturebaseFeedbackLink />
