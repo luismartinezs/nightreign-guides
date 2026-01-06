@@ -13,10 +13,14 @@ import { Link } from "@/shared/components/Link";
 import { cn } from "@/shared/utils/cn";
 import { PrimaryLink } from "@/shared/components/PrimaryLink";
 
-const links: { label: string; href: string, mobileOnly?: boolean }[] = [
+const links: { label: string; href: string; mobileOnly?: boolean }[] = [
   {
     label: "Resources",
     href: "/#resources",
+  },
+  {
+    label: "Great Hollow Map",
+    href: "/great-hollow-map",
   },
 ];
 
@@ -86,7 +90,10 @@ export function Header(props: React.ComponentPropsWithoutRef<"header">) {
           <div className="hidden w-full items-center justify-between gap-12 xl:order-1 xl:flex">
             <div className="flex items-center gap-4">
               <LogoLink />
-              <PrimaryLink href="/" className="hidden text-xl font-bold xl:block">
+              <PrimaryLink
+                href="/"
+                className="hidden text-xl font-bold xl:block"
+              >
                 <span className="text-primary-300">Nightreign</span>
                 <span className="text-secondary-300">Hub</span>
               </PrimaryLink>

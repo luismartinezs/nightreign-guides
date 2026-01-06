@@ -7,7 +7,11 @@ import { Link } from "@/shared/components/Link";
 const mainLinks: { label: string; href: string }[] = [
   {
     label: "Resources",
-    href: "/#resources"
+    href: "/#resources",
+  },
+  {
+    label: "Great Hollow Map",
+    href: "/great-hollow-map",
   },
 ];
 
@@ -56,26 +60,28 @@ export function Footer() {
           </div>
 
           {/* Placeholder Column 2 */}
-          {secondaryLinks.length > 0 && <div className="space-y-4">
-            <h3 className="text-sm font-semibold leading-6 text-slate-900 dark:text-white">
-              Other Links
-            </h3>
-            <ul role="list" className="space-y-3">
-              {secondaryLinks.map((item) => (
-                <li key={item.label}>
-                  <Link
-                    href={item.href}
-                    className="text-sm leading-6 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
-                  >
-                    {item.label}
-                  </Link>
+          {secondaryLinks.length > 0 && (
+            <div className="space-y-4">
+              <h3 className="text-sm font-semibold leading-6 text-slate-900 dark:text-white">
+                Other Links
+              </h3>
+              <ul role="list" className="space-y-3">
+                {secondaryLinks.map((item) => (
+                  <li key={item.label}>
+                    <Link
+                      href={item.href}
+                      className="text-sm leading-6 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+                <li>
+                  <DonateButton />
                 </li>
-              ))}
-              <li>
-                <DonateButton />
-              </li>
-            </ul>
-          </div>}
+              </ul>
+            </div>
+          )}
 
           {/* Social Column */}
           <div className="space-y-4 md:col-start-4">
