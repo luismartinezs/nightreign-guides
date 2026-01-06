@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { IoReload } from "react-icons/io5";
+import { cn } from "@/shared/utils/cn";
 import { Crystal, MapZone } from "./config";
 import { CrystalMarker } from "./crystal-marker";
 import { toast } from "sonner"; // Assuming sonner is available based on package.json
@@ -15,6 +16,8 @@ interface MapOverlayProps {
   onCrystalClick: (id: string) => void;
   onReset?: () => void;
   isDevMode?: boolean;
+  minimal?: boolean;
+  className?: string;
 }
 
 export function MapOverlay({
@@ -26,13 +29,12 @@ export function MapOverlay({
   onCrystalClick,
   onReset,
   isDevMode,
+  minimal,
+  className,
 }: MapOverlayProps) {
   const handleMapClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    // ... existing handleMapClick logic ...
     if (!isDevMode) return;
-
-    // Prevent interfering with crystal clicks if they propagate (though they usually stop propagation or are on top)
-    // We only want clicks on the map background to trigger this, but crystals are children.
-    // However, CrystalMarker is a button so it should capture its own clicks.
 
     const rect = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
@@ -49,15 +51,21 @@ export function MapOverlay({
   };
 
   return (
-    <div className="relative w-full rounded-lg overflow-hidden bg-gray-900 border border-gray-800">
+    <div
+      className={cn(
+        "relative w-full rounded-lg overflow-hidden bg-gray-900 border border-gray-800",
+        className
+      )}
+    >
       {/*
         Container is now relative w-full.
         Image uses w-full h-auto to maintain intrinsic aspect ratio without cropping.
       */}
       <div
-        className={`relative w-full ${
-          isDevMode ? "cursor-crosshair ring-2 ring-red-500" : ""
-        }`}
+        className={cn(
+          "relative w-full",
+          isDevMode && "cursor-crosshair ring-2 ring-red-500"
+        )}
         onClick={handleMapClick}
       >
         <Image
@@ -65,7 +73,10 @@ export function MapOverlay({
           alt={alt}
           width={800}
           height={600}
-          className="w-full h-auto block pointer-events-none" // Disable pointer events on image to ensure click hits container
+          className={cn(
+            "w-full h-auto block pointer-events-none",
+            minimal && "h-full w-full object-contain"
+          )}
           sizes="(max-width: 768px) 100vw, 50vw"
           priority
         />
@@ -110,12 +121,14 @@ export function MapOverlay({
         )}
       </div>
 
-      <div className="p-3 bg-gray-900/90 backdrop-blur text-center border-t border-gray-800 flex justify-between items-center">
-        <p className="text-sm font-medium text-gray-200 flex-1">{alt}</p>
-        {isDevMode && (
-          <span className="text-xs text-red-400 font-mono">DEV MODE</span>
-        )}
-      </div>
+      {!minimal && (
+        <div className="p-3 bg-gray-900/90 backdrop-blur text-center border-t border-gray-800 flex justify-between items-center">
+          <p className="text-sm font-medium text-gray-200 flex-1">{alt}</p>
+          {isDevMode && (
+            <span className="text-xs text-red-400 font-mono">DEV MODE</span>
+          )}
+        </div>
+      )}
     </div>
   );
 }
