@@ -10,7 +10,7 @@ const mainLinks: { label: string; href: string }[] = [
     href: "/#resources",
   },
   {
-    label: "Great Hollow Map",
+    label: "Great Hollow",
     href: "/great-hollow-map",
   },
 ];

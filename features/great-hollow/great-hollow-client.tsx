@@ -13,6 +13,7 @@ export function GreatHollowClient({
   const [foundCrystalIds, setFoundCrystalIds] = useState<Set<string>>(
     new Set()
   );
+  const [isDevMode, setIsDevMode] = useState(false);
 
   const handleCrystalClick = (id: string) => {
     setFoundCrystalIds((prev) => {
@@ -60,6 +61,14 @@ export function GreatHollowClient({
     <SectionWrapper className={className} {...otherProps}>
       <div className="flex flex-col gap-2 mb-8">
         <HeadingH2>Great Hollow Crystal Selector</HeadingH2>
+        {/* Dev Mode Hidden
+          <button
+            onClick={() => setIsDevMode(!isDevMode)}
+            className="text-xs px-2 py-1 bg-gray-800 rounded font-mono text-gray-400 hover:text-white"
+          >
+            {isDevMode ? "DEV MODE: ON" : "DEV MODE (click to enable)"}
+          </button>
+          */}
         <p className="text-gray-400">
           Click on the crystals you have found to narrow down the possible
           locations of the remaining crystals.
@@ -75,6 +84,7 @@ export function GreatHollowClient({
           foundCrystalIds={foundCrystalIds}
           onCrystalClick={handleCrystalClick}
           onReset={handleReset}
+          isDevMode={isDevMode}
         />
         <MapOverlay
           imageSrc="/features/great-hollow/great-hollow-bot-crop.webp"
@@ -84,6 +94,7 @@ export function GreatHollowClient({
           foundCrystalIds={foundCrystalIds}
           onCrystalClick={handleCrystalClick}
           onReset={handleReset}
+          isDevMode={isDevMode}
         />
       </div>
     </SectionWrapper>

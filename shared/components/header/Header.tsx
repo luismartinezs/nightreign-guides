@@ -19,7 +19,7 @@ const links: { label: string; href: string; mobileOnly?: boolean }[] = [
     href: "/#resources",
   },
   {
-    label: "Great Hollow Map",
+    label: "Great Hollow",
     href: "/great-hollow-map",
   },
 ];

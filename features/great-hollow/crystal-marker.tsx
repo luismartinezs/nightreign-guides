@@ -8,7 +8,7 @@ interface CrystalMarkerProps {
   x: number;
   y: number;
   isSelected?: boolean;
-  onClick: () => void;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export function CrystalMarker({

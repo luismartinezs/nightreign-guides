@@ -17,60 +17,93 @@ export interface Distribution {
   crystalIds: string[];
 }
 
-// Generate dummy crystals for each quadrant in both zones
-const createQuadrantCrystals = (zone: MapZone, startId: number): Crystal[] => {
-  return [
-    // Top-Left (Quadrant 1)
-    { id: `${zone}-q1-1`, x: 25, y: 25, zone },
-    { id: `${zone}-q1-2`, x: 30, y: 30, zone },
-    // Top-Right (Quadrant 2)
-    { id: `${zone}-q2-1`, x: 75, y: 25, zone },
-    { id: `${zone}-q2-2`, x: 70, y: 30, zone },
-    // Bottom-Left (Quadrant 3)
-    { id: `${zone}-q3-1`, x: 25, y: 75, zone },
-    { id: `${zone}-q3-2`, x: 30, y: 70, zone },
-    // Bottom-Right (Quadrant 4)
-    { id: `${zone}-q4-1`, x: 75, y: 75, zone },
-    { id: `${zone}-q4-2`, x: 70, y: 70, zone },
-  ];
-};
+// Real Data Groups
+const GROUP_1: Crystal[] = [
+  { id: 'g1-1', x: 22.58, y: 92.11, zone: 'top' },
+  { id: 'g1-2', x: 17.03, y: 67.92, zone: 'top' },
+  { id: 'g1-3', x: 35.3, y: 70.43, zone: 'top' },
+  { id: 'g1-4', x: 30.29, y: 41.22, zone: 'top' },
+  { id: 'g1-5', x: 41.94, y: 20.07, zone: 'top' },
+  { id: 'g1-6', x: 74.19, y: 44.27, zone: 'top' },
+  { id: 'g1-7', x: 64.16, y: 51.97, zone: 'bottom' },
+  { id: 'g1-8', x: 44.27, y: 65.77, zone: 'bottom' },
+];
 
-const topCrystals = createQuadrantCrystals('top', 0);
-const bottomCrystals = createQuadrantCrystals('bottom', 100);
+const GROUP_2_NEW: Crystal[] = [
+  { id: 'g2-1', x: 40.86, y: 95.88, zone: 'top' },
+  { id: 'g2-2', x: 50.54, y: 76.88, zone: 'top' },
+  { id: 'g2-3', x: 10.93, y: 48.57, zone: 'top' },
+  { id: 'g2-4', x: 37.28, y: 48.03, zone: 'top' },
+  { id: 'g2-5', x: 91.04, y: 48.75, zone: 'bottom' },
+];
 
-export const ALL_CRYSTALS: Crystal[] = [...topCrystals, ...bottomCrystals];
+const GROUP_3_NEW: Crystal[] = [
+  { id: 'g3-1', x: 41.22, y: 61.65, zone: 'top' },
+  { id: 'g3-2', x: 82.8, y: 19.89, zone: 'top' },
+  { id: 'g3-3', x: 47.31, y: 83.15, zone: 'bottom' },
+  { id: 'g3-4', x: 82.97, y: 86.38, zone: 'bottom' },
+  { id: 'g3-5', x: 74.37, y: 24.37, zone: 'bottom' },
+];
+
+const GROUP_4_NEW: Crystal[] = [
+  { id: 'g4-1', x: 4.66, y: 68.1, zone: 'top' },
+  { id: 'g4-2', x: 54.3, y: 38.35, zone: 'top' },
+  { id: 'g4-3', x: 87.28, y: 43.37, zone: 'top' },
+];
+
+export const ALL_CRYSTALS: Crystal[] = [
+  ...GROUP_1,
+  ...GROUP_2_NEW,
+  ...GROUP_3_NEW,
+  ...GROUP_4_NEW,
+];
 
 export const DISTRIBUTIONS: Distribution[] = [
   {
     id: 'dist-1',
-    name: 'Top-Left Distribution',
-    crystalIds: [
-      ...topCrystals.filter((c) => c.id.includes('q1')).map((c) => c.id),
-      ...bottomCrystals.filter((c) => c.id.includes('q1')).map((c) => c.id),
-    ],
+    name: 'Group 1 Distribution',
+    crystalIds: GROUP_1.map(c => c.id),
   },
   {
     id: 'dist-2',
-    name: 'Top-Right Distribution',
+    name: 'Group 2 Distribution',
     crystalIds: [
-      ...topCrystals.filter((c) => c.id.includes('q2')).map((c) => c.id),
-      ...bottomCrystals.filter((c) => c.id.includes('q2')).map((c) => c.id),
+      'g1-3', // Reused
+      'g2-1',
+      'g2-2',
+      'g2-3',
+      'g2-4',
+      'g1-6', // Reused
+      'g1-8', // Reused
+      'g2-5',
     ],
   },
   {
     id: 'dist-3',
-    name: 'Bottom-Left Distribution',
+    name: 'Group 3 Distribution',
     crystalIds: [
-      ...topCrystals.filter((c) => c.id.includes('q3')).map((c) => c.id),
-      ...bottomCrystals.filter((c) => c.id.includes('q3')).map((c) => c.id),
+      'g1-1', // Reused
+      'g2-3', // Reused
+      'g3-1',
+      'g1-4', // Reused
+      'g3-2',
+      'g3-3',
+      'g3-4',
+      'g3-5',
     ],
   },
   {
     id: 'dist-4',
-    name: 'Bottom-Right Distribution',
+    name: 'Group 4 Distribution',
     crystalIds: [
-      ...topCrystals.filter((c) => c.id.includes('q4')).map((c) => c.id),
-      ...bottomCrystals.filter((c) => c.id.includes('q4')).map((c) => c.id),
+      'g4-1',
+      'g3-1', // Reused
+      'g2-4', // Reused
+      'g4-2',
+      'g4-3',
+      'g2-5', // Reused
+      'g3-4', // Reused
+      'g3-3', // Reused
     ],
   },
 ];
