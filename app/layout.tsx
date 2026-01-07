@@ -8,6 +8,7 @@ import { FixedBottomRightStack } from "@/shared/components/FixedBottomRightStack
 import { FeaturebaseFeedbackLink } from "@/shared/components/FeaturebaseFeedbackLink";
 import { AutoScrollButton } from "@/shared/components/auto-scroll-button";
 import { ShareCTA } from "@/features/shared/share-cta";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: meta.name,
@@ -46,6 +47,15 @@ export default function RootLayout({
             <AutoScrollButton />
           </FixedBottomRightStack>
         </div>
+        {process.env.NODE_ENV === "production" && (
+          <>
+            <Script
+              src="https://umami-tau-tawny.vercel.app/script.js"
+              data-website-id="5e041e8b-d023-4f86-a2a3-7272b429503b"
+              strategy="afterInteractive"
+            />
+          </>
+        )}
       </body>
     </html>
   );
