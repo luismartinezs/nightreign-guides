@@ -22,6 +22,10 @@ const links: { label: string; href: string; mobileOnly?: boolean }[] = [
     label: "Great Hollow",
     href: "/great-hollow-map",
   },
+  {
+    label: "Nightlords",
+    href: "/nightlords",
+  },
 ];
 
 const socialLinks = [

@@ -13,6 +13,10 @@ const mainLinks: { label: string; href: string }[] = [
     label: "Great Hollow",
     href: "/great-hollow-map",
   },
+  {
+    label: "Nightlords",
+    href: "/nightlords",
+  },
 ];
 
 const secondaryLinks: { label: string; href: string }[] = [
