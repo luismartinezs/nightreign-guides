@@ -50,7 +50,7 @@ export default function RootLayout({
         {process.env.NODE_ENV === "production" && (
           <>
             <Script
-              src="https://umami-tau-tawny.vercel.app/script.js"
+              src="https://umami.appforgelabs.com/script.js"
               data-website-id="5e041e8b-d023-4f86-a2a3-7272b429503b"
               strategy="afterInteractive"
             />

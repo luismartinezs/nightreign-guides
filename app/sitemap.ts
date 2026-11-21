@@ -1,6 +1,8 @@
 import type { MetadataRoute } from 'next'
 import { metadata } from '@/shared/metadata'
 
+export const dynamic = 'force-static'
+
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
